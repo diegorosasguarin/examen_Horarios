@@ -23,3 +23,9 @@ def guardar_reporte_json(reporte_datos):
     """Guarda el reporte estructurado en el archivo reporte_horario.json."""
     with open(ARCHIVO_REPORTE, "w", encoding="utf-8") as file:
         json.dump(reporte_datos, file, ensure_ascii=False, indent=4)
+
+
+def guardar_reporte_balance_semanal(reporte_balance):
+    """Guarda el reporte estructurado en el archivo reporte_balance_semanal.json."""
+    with open("reporte_balance_semanal.json", "w", encoding="utf-8") as file:
+        json.dump(reporte_balance, file, ensure_ascii=False, indent=4)

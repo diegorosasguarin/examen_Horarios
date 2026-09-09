@@ -16,7 +16,8 @@ def mostrar_menu():
     print("3. Modificar una materia o actividad")
     print("4. Eliminar una materia o actividad")
     print("5. Generar reporte del horario")
-    print("6. Salir")
+    print("6. Reporte balance semanal")
+    print("7. Salir")
     print("==========================================")
 
 def main():
@@ -37,6 +38,9 @@ def main():
         elif opcion == "5":
             generar_reporte(horarios)
         elif opcion == "6":
+            reporte_balance_semanal(horarios)
+        elif opcion == "7":
+        
             print("\n¡Gracias por utilizar el Generador de Horarios!")
             break
         else:

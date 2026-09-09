@@ -1,4 +1,4 @@
-from persistencia import cargar_horarios, guardar_horarios, guardar_reporte_json
+from persistencia import cargar_horarios, guardar_horarios, guardar_reporte_balance_semanal, guardar_reporte_json
 from validaciones import verificar_conflicto, DIAS_SEMANA, hora_a_minutos, normalizar_cadena
 
 def normalizar_dia(dia_input):
@@ -213,3 +213,64 @@ def generar_reporte(horarios):
             input("\nPresione ENTER para continuar...")
 
     print("\nReporte generado y guardado exitosamente en 'reporte_horario.json'.")
+
+
+
+
+
+def reporte_balance_semanal(horarios):
+    print("\n==========================================")
+    print("REPORTE Balance Semanal")
+    print("==========================================")
+
+    if not horarios:
+        print("No hay eventos registrados en el horario.")
+        return
+
+    reporte_dict_balance = {}
+    for d in DIAS_SEMANA:
+        eventos_dia = [e for e in horarios if normalizar_cadena(e["dia"]) == normalizar_cadena(d)]
+        if eventos_dia:
+            eventos_dia.sort(key=lambda x: hora_a_minutos(x["hora_inicio"]) or 0)
+            reporte_dict[d] = eventos_dia
+
+    reporte_json_list_balance = []
+    for dia, eventos in reporte_dict.items():
+        eventos_formateados = []
+        for ev in eventos:
+            item = {
+                "materia": ev["materia"],
+                "hora_inicio": ev["hora_inicio"],
+                "hora_fin": ev["hora_fin"],
+                "ubicacion": ev["ubicacion"]
+            }
+            eventos_formateados.append(item)
+        reporte_json_list_balance.append({
+            "dia": dia,
+            "eventos": eventos_formateados
+        })
+
+    guardar_reporte_balance_semanal(reporte_json_list_balance)
+
+    dias_reporte = list(reporte_dict_balance.keys())
+    bloques_paginacion = 3
+
+    for i, dia in enumerate(dias_reporte):
+        print(f"\n{dia}:")
+        for ev in reporte_dict_balance[dia]:
+            ubicacion_str = f" en {ev['ubicacion']}" if ev['ubicacion'] else ""
+            print(f"  - {ev['materia']} ({ev['hora_inicio']}-{ev['hora_fin']}){ubicacion_str}")
+
+        if (i + 1) % bloques_paginacion == 0 and (i + 1) < len(dias_reporte):
+            input("\nPresione ENTER para continuar...")
+
+    print("\nReporte generado y guardado exitosamente en 'reporte_balance_semanal.json'.")
+
+
+
+
+
+
+
+
+
